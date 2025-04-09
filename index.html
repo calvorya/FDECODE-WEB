@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FDECODE - Text Encoder/Decoder</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            100: '#1a1a1a',
+                            200: '#2d2d2d',
+                            300: '#404040',
+                            400: '#535353',
+                            500: '#666666',
+                            600: '#808080',
+                            700: '#999999',
+                            800: '#b3b3b3',
+                            900: '#cccccc'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="hash-implementations.js"></script>
+    <script src="script.js"></script>
+    <style>
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            textarea {
+                min-height: 120px;
+            }
+            .mobile-stack {
+                flex-direction: column;
+            }
+            .mobile-full {
+                width: 100%;
+            }
+        }
+
+        .dark textarea {
+            background-color: #2d2d2d;
+            color: #e5e7eb;
+            border-color: #404040;
+        }
+
+        .dark select {
+            background-color: #2d2d2d;
+            color: #e5e7eb;
+            border-color: #404040;
+        }
+
+        .copied {
+            background-color: #059669 !important;
+            transition: background-color 0.3s ease;
+        }
+
+        .animate-fade {
+            transition: all 0.3s ease-in-out;
+        }
+
+        textarea, select {
+            transition: all 0.2s ease-in-out;
+        }
+
+        textarea:focus, select:focus {
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+            outline: none;
+        }
+
+        .btn-hover {
+            transition: all 0.2s ease-in-out;
+        }
+
+        .btn-hover:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .dark .btn-hover:hover {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.12);
+        }
+
+        /* Loading animation */
+        .loading {
+            position: relative;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            border: 4px solid transparent;
+            border-top-color: #ffffff;
+            border-radius: 50%;
+            animation: loading-spinner 1s ease infinite;
+        }
+
+        @keyframes loading-spinner {
+            from {
+                transform: rotate(0turn);
+            }
+            to {
+                transform: rotate(1turn);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-dark-100 transition-colors duration-200">
+    <div class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-white dark:bg-dark-200 shadow-sm">
+            <nav class="container mx-auto px-4 py-3 flex justify-between items-center">
+                <div class="flex items-center space-x-4">
+                    <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100">FDECODE</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="theme-toggle" class="p-2 rounded-lg bg-gray-200 dark:bg-dark-300 btn-hover">
+                        <svg class="w-6 h-6 text-gray-800 dark:text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        </svg>
+                    </button>
+                    <a href="https://github.com/SystemDownTM/fdecode-web" target="_blank" class="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white btn-hover">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    </a>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Main Content -->
+        <main class="container mx-auto px-4 py-8 flex-grow">
+            <div class="max-w-4xl mx-auto space-y-6 bg-white dark:bg-dark-200 rounded-lg shadow-lg p-6">
+                <!-- Operation Controls -->
+                <div class="flex flex-wrap gap-4 mobile-stack">
+                    <select id="operation-type" class="flex-1 mobile-full p-2 border rounded-lg bg-white dark:bg-dark-300 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-dark-400 focus:ring-2 focus:ring-blue-500">
+                        <option value="encode">Encode</option>
+                        <option value="decode">Decode</option>
+                        <option value="hash">Hash</option>
+                    </select>
+                    <select id="format-type" class="flex-1 mobile-full p-2 border rounded-lg bg-white dark:bg-dark-300 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-dark-400 focus:ring-2 focus:ring-blue-500">
+                        <option value="base64">Base64</option>
+                        <option value="url">URL</option>
+                        <option value="html">HTML</option>
+                        <option value="binary">Binary</option>
+                        <option value="hex">Hexadecimal</option>
+                        <option value="morse">Morse Code</option>
+                        <option value="rot13">ROT13</option>
+                        <option value="unicode">Unicode Escape</option>
+                    </select>
+                </div>
+
+                <!-- Input Section -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-900 dark:text-gray-200">Input Text</label>
+                    <textarea id="input-text" class="w-full p-3 border rounded-lg bg-white dark:bg-dark-300 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-dark-400 focus:ring-2 focus:ring-blue-500" rows="6" placeholder="Enter text to encode/decode/hash..."></textarea>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-wrap gap-4 mobile-stack">
+                    <button id="convert-btn" class="flex-1 mobile-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg btn-hover">Convert</button>
+                    <button id="clear-btn" class="flex-1 mobile-full py-2 px-4 bg-gray-500 hover:bg-gray-600 text-white font-medium rounded-lg btn-hover">Clear</button>
+                </div>
+
+                <!-- Output Section -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-900 dark:text-gray-200">Output</label>
+                    <div class="relative">
+                        <textarea id="output-text" class="w-full p-3 border rounded-lg bg-white dark:bg-dark-300 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-dark-400" rows="6" readonly></textarea>
+                        <button id="copy-btn" class="absolute top-2 right-2 p-2 bg-gray-700 dark:bg-dark-400 hover:bg-gray-800 dark:hover:bg-dark-500 text-white rounded btn-hover">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="mt-auto py-6 bg-white dark:bg-dark-200">
+            <div class="container mx-auto px-4 text-center text-gray-600 dark:text-gray-400">
+                <p>FDECODE - A Modern Text Encoding/Decoding Tool</p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html> 

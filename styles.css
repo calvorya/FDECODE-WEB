@@ -1,0 +1,155 @@
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Textarea focus styles */
+textarea:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+/* Select focus styles */
+select:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+/* Button hover effects */
+button {
+    transition: all 0.2s ease-in-out;
+}
+
+button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+/* Loading state */
+.loading {
+    opacity: 0.7;
+    cursor: wait;
+}
+
+/* Responsive text sizes */
+@media (max-width: 640px) {
+    h1 {
+        font-size: 1.875rem;
+    }
+    
+    h2 {
+        font-size: 1.25rem;
+    }
+
+    .container {
+        padding: 1rem;
+    }
+
+    button {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+
+    select {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* Tablet and larger screens */
+@media (min-width: 641px) and (max-width: 1024px) {
+    .container {
+        padding: 2rem;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #1a1a1a;
+        color: #ffffff;
+    }
+
+    .bg-white {
+        background-color: #2d2d2d;
+    }
+
+    textarea, select {
+        background-color: #3d3d3d;
+        color: #ffffff;
+        border-color: #4a4a4a;
+    }
+
+    textarea:disabled {
+        background-color: #2d2d2d;
+    }
+
+    textarea:focus, select:focus {
+        box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.4);
+    }
+
+    .text-gray-600 {
+        color: #d1d1d1;
+    }
+
+    button {
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    button:hover {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #2d2d2d;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #666;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #888;
+    }
+}
+
+/* Animation effects */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-in;
+}
+
+/* Error state */
+.error {
+    border-color: #ef4444 !important;
+    background-color: rgba(239, 68, 68, 0.1) !important;
+}
+
+/* Success feedback */
+.success {
+    border-color: #10b981 !important;
+    background-color: rgba(16, 185, 129, 0.1) !important;
+} 
